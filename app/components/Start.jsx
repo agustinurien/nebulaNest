@@ -17,6 +17,7 @@ const Start = () => {
                 width={6000}
                 height={4000}
                 className='imagenFondo'
+                alt='imagenFondo'
             ></Image>
 
         </section>

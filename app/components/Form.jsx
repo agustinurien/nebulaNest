@@ -1,15 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { manrope } from '../fonts';
+import { updateUserData, uploadFileFunction } from '../functions/data';
+import { CgEnter } from 'react-icons/cg';
+import Image from 'next/image';
+import { MdModeEdit } from 'react-icons/md';
 
-const Form = () => {
-
+const Form = ({ dataUser }) => {
     const countries = [
         "Argentina", "Australia", "Brazil", "Canada", "China", "France", "Germany",
         "India", "Japan", "Mexico", "Russia", "South Africa", "United Kingdom", "United States"
     ];
+
     const [formData, setFormData] = useState({
-        username: '',
-        profession: '',
+        avatar: '',
+        user_name: '',
         location: '',
         website: '',
         bio: ''
@@ -17,7 +21,29 @@ const Form = () => {
 
     const [wordCount, setWordCount] = useState(0);
     const [error, setError] = useState('');
+    const [changeImage, setChangeImage] = useState(false);
+    const [file, setFile] = useState();
 
+    useEffect(() => {
+        if (dataUser) {
+            setFormData({
+                avatar: dataUser.avatar || '',
+                user_name: dataUser.user_name || '',
+                location: dataUser.location || '',
+                website: dataUser.website || '',
+                bio: dataUser.bio || ''
+            });
+            setWordCount(dataUser.bio ? dataUser.bio.split(' ').filter(word => word !== '').length : 0);
+        }
+    }, [dataUser]);
+
+    const handleChangeImage = () => {
+        document.getElementById('fileInput').click()
+    };
+    const uploadFile = async (file) => {
+        const result = await uploadFileFunction(file)
+        setFile(result)
+    }
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === 'bio') {
@@ -34,73 +60,108 @@ const Form = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        console.log(formData);
+        try {
+            await updateUserData(formData, file);
+            // Aquí puedes llamar a la función updateUserData(formData) para actualizar los datos del usuario
+        } catch (error) {
+            console.error('Error submitting form: ', error);
+        }
+    };
+    const redirect = () => {
+        window.location.href = `/${dataUser.user_name}`;
     };
 
     return (
         <div className={`${manrope.className} containerForm`}>
             <form onSubmit={handleSubmit} className={`${manrope.className} form`}>
-
-
                 <div className='basicInfoEdit'>
-                    <div style={{ width: 104, height: 104, borderRadius: "100%", backgroundColor: "violet" }}></div>
+                    <div
+                        onMouseOver={() => setChangeImage(true)}
+                        onMouseOut={() => setChangeImage(false)}
+                        style={{
+                            position: "relative",
+                            display: "flex",
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: 104,
+                            height: 104,
+                            borderRadius: "100%",
+                            backgroundColor: `${dataUser?.color}`
+                        }}>
+                        {
+                            formData.avatar || file ?
+                                <Image
+                                    src={file ? file : formData.avatar}
+                                    width={1000}
+                                    height={1000}
+                                    alt='avatar'
+                                    className='avatarEdit'
+                                    style={{
+                                        borderRadius: "100%"
+                                    }}
+                                />
+                                :
+                                <h2 style={{ color: "white" }}>{formData.user_name.charAt(0).toUpperCase()}</h2>
+                        }
+                        {
+                            changeImage &&
+                            <div
+                                onClick={handleChangeImage}
+                                style={{
+                                    backgroundColor: "rgba(0, 0, 0, 0.377)",
+                                    width: "100%",
+                                    height: "100%",
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: "center",
+                                    borderRadius: "100%"
+                                }}>
+                                <MdModeEdit fontSize={39} color='white' />
+                                <input id="fileInput" type="file" onChange={(e) => uploadFile(e.target.files[0])} style={{ display: 'none' }} />
+                            </div>
+                        }
 
+                    </div>
                     <input
-
                         type="text"
-                        id="username"
-                        name="username"
-                        placeholder="Nombre de Usuario"
-                        value={formData.username}
+                        id="user_name"
+                        name="user_name"
+                        value={formData.user_name}
                         onChange={handleChange}
-                        required
                         className={`${manrope.className}`}
                     />
-
-
-
                 </div>
                 <div className='moreInfoEdit'>
-
-
                     <select
                         id="location"
                         name="location"
                         value={formData.location}
                         onChange={handleChange}
-                        required
                     >
-                        <option value="">Selecciona tu país</option>
+                        <option value="">Select your country</option>
                         {countries.map((country, index) => (
                             <option key={index} value={country}>{country}</option>
                         ))}
                     </select>
-
-
                     <input
                         type="url"
                         id="website"
                         name="website"
-                        placeholder="https://example.com"
                         value={formData.website}
                         onChange={handleChange}
-                        required
-                        className={`${manrope.className} `}
+                        className={`${manrope.className}`}
                     />
-
-
-
                     <textarea
                         id="bio"
                         name="bio"
                         rows="4"
-                        placeholder="About you..."
                         value={formData.bio}
                         onChange={handleChange}
-                        required
                         className={`${manrope.className}`}
                     />
                     <div>
@@ -110,7 +171,7 @@ const Form = () => {
                 </div>
                 <div style={{ width: "75%", display: "flex", flexDirection: "column", gap: "10px" }}>
                     <button className={`${manrope.className} done`} type="submit">Done</button>
-                    <button className={`${manrope.className} done cancel`} >cancel</button>
+                    <button className={`${manrope.className} done cancel`} onClick={() => redirect()} type="button">Cancel</button>
                 </div>
             </form>
         </div>

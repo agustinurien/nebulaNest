@@ -19,12 +19,13 @@ body{
 }
 
 .navbar{
+    position: relative;
     height: 100%;
     margin: 0px 15%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    
 }
 
 .contenedorLogo{
@@ -32,11 +33,13 @@ body{
     justify-content: flex-start;
     align-items: center;
     font-size: 1.5rem;
+    
 }
 .contenedorImagenLogo{
     width: 50px;
     height: 50px;
     margin-top: 5px;
+    
 }
 .logo{
     height: 100%;
@@ -47,7 +50,7 @@ body{
     position: relative;
     display: flex;
     gap: 20px;
-
+    
 }
 
 .signUp{
@@ -139,6 +142,7 @@ body{
 
 .contenido{
     height: fit-content;
+    
 }
 
 .exploreContainer{
@@ -177,7 +181,7 @@ body{
     margin: 20px 15%;
     padding: 20px 0px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-wrap: wrap;
 
 }
@@ -186,6 +190,7 @@ body{
     aspect-ratio: 1 / 1; 
     flex-basis: calc(25% - 10px);
     max-width: calc(25% - 10px); 
+    min-width: 260px;
     margin-bottom: 20px;
 }
 .containerPostHome{
@@ -198,6 +203,7 @@ body{
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top;
 }
 .contenedorTituloPostHome{
     position: absolute;
@@ -263,8 +269,8 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    
     border-radius: 100%;
+    
 }
 .profileImage{
     width: 100%;
@@ -276,10 +282,10 @@ body{
 .initial{
     color: white;
     position: absolute;
-    
+    font-size: 0.9rem;
 }
 
-.contenedorViewProfile{
+.viewProfile{
     position: absolute;
     margin-top: 70px;
     width: 200px;
@@ -294,20 +300,19 @@ body{
     align-items: center;
     box-shadow: 0px 0px 5px rgba(117, 117, 117, 0.603);
 }
-.contenedorViewProfile h3{
+.viewProfile h3{
     margin: 0px;
     margin-top: 10px;
     font-size: 1.1rem;
     padding: 5px;
 }
-.contenedorViewProfile h4{
+.viewProfile h4{
     margin: 0px;
-    
     font-size: 0.7rem;
     color: rgba(0, 0, 0, 0.747);
     
 }
-.contenedorViewProfile a{
+.viewProfile a{
     color: inherit;
     text-decoration: none;
     
@@ -382,7 +387,7 @@ body{
 .contenedorProfile{
     padding-top: 40px;
     width: 250px;
-    height: 80vh;
+    height: fit-content;
     background: linear-gradient(to top, rgba(163, 163, 163, 0) 1%,  rgb(255, 255, 255)20%);
     
     border-radius: 5px;
@@ -495,6 +500,7 @@ body{
     
 }
 .contenedorInput{
+    position: relative;
     display: flex;
 }
 .contenedorLibrary .addLibrary{
@@ -505,17 +511,21 @@ body{
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
     border-left: 0px;
+    background-color: white;
+    box-shadow: 4px 5px 10px rgba(32, 32, 32, 0.178);
 }
 
 .inputAgregar{
-    width: 90px;
+    width: 150px;
     background-color: transparent;
     padding: 6px 20px;
     border-radius: 20px;
-    border: 1px solid rgba(0, 0, 0, 0.329);
+    border: 0px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
     border-right: 0px;
+    background-color: white;
+    box-shadow: 0px 5px 10px rgba(32, 32, 32, 0.178);
 }
 
 
@@ -536,13 +546,70 @@ body{
     border-radius: 5px;
 }
 
-.contenedorPostProfile h1{
-    margin: 0px;
+.contenedorPostProfile h2{
     position: absolute;
     bottom: 0;
     color: white;
-    padding: 20px;
+    margin: 20px;
+    font-size: 1rem;
+    pointer-events: none;
 }
+.contenedorEditPost{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-bottom: 21px;
+    padding-right: 15px;
+    
+}
+.editPost{
+    border: 0px;
+    background-color: transparent;
+    color: white;
+    
+}
+.fondoEditPost{
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    background-color:  rgba(0, 0, 0, 0.37);;
+    width: 100%;
+    height: 100vh;
+    z-index: 999;
+}
+.doneEdit{
+    width: 100%;
+    background-color: rgb(0, 0, 0);
+    padding: 0px 10px;
+    height: 40px;
+    border: 0px;
+    color: white;
+    margin-bottom: 10px;
+    border-radius: 20px;
+
+}
+.cancel2{
+    width: 100%;
+    padding: 0px 10px;
+    height: 40px;
+    border: 1px solid rgba(58, 58, 58, 0.534);
+    color: rgb(58, 58, 58);
+    background-color: transparent;
+    margin-bottom: 10px;
+    border-radius: 20px;
+}
+.deletePost{
+    width: fit-content;
+    background-color: transparent;
+    height: 40px;
+    border: 0px;
+    color: rgb(58, 58, 58);
+    margin-bottom: 10px;
+    border-radius: 20px;
+}
+
 .postImage{
     height: 100%;
     width: 100%;
@@ -568,23 +635,25 @@ body{
     top: 0;
     width: 100%;
     height: 100%;
-    
     background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+    border-radius: 8px;
+    
 }
+
 
 .contenedorAgregarPost{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 240px;
     background-color: rgba(228, 228, 228, 0.671);
     flex-basis: calc(25% - 10px);
     max-width: calc(25% - 10px); 
+    min-width: 260px;
     border-radius: 5px;
     border: 0px;
     font-size: 30px;
     color: rgba(0, 0, 0, 0.13);
-    min-width: 240px;
+    height: 240px;
 }
 .contenedorAgregarPost:hover{
     background-color: rgba(212, 212, 212, 0.699);
@@ -599,18 +668,18 @@ body{
 }
 
 .crearPostContainer{
-    position: absolute;
+    position: fixed;
     top: 0;
-    background-color: rgba(0, 0, 0, 0.267);
+    background-color: rgba(0, 0, 0, 0.37);
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    z-index: 1;
+    z-index: 999;
 }
 .crearPostData{
-    
+    position: relative;
     background-color: white;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.329);
     height: fit-content;
@@ -795,6 +864,12 @@ padding-top: 120px;
     gap: 25px;
     width: 80%;
 }
+.avatarEdit{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 100%;
+}
 .basicInfoEdit input{
     display: flex;
     padding: 8px;
@@ -860,6 +935,7 @@ padding-top: 120px;
     border: 0px;
     background-color: black;
     color: white;
+    
 }
 .cancel{
     width: 100%;
@@ -870,3 +946,180 @@ padding-top: 120px;
     color: rgb(48, 48, 48);
     margin-bottom: 30px;
 }
+
+.contenedorLibrariesEdit{
+    margin-top: 45px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: white;
+    height: fit-content;
+    border-radius: 15px;
+    z-index: 998;
+    padding-top: 20px;
+    box-shadow: 0px 5px 10px rgba(32, 32, 32, 0.178);
+}
+
+.libraryEdit{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 12px;
+    gap: 15px;
+    margin-left: 20px;
+    margin-right: 15px;
+}
+.libraryEdit .eliminarLibrary{
+    margin: 0px;
+    padding: 0px;
+    width: fit-content;
+    color: rgba(0, 0, 0, 0.623);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.libraryEdit input{
+    border: 0px;
+    border-bottom: 2px solid rgba(70, 70, 70, 0.74);
+    height: 30px;
+}
+.contenedorLibrariesEdit .botonDoneLibraryEdit{
+    padding: 12px 0px;
+    margin-top: 20px;
+    border-radius: 0px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background-color: rgba(238, 238, 238, 0);
+    color: rgba(70, 70, 70, 0.795);
+    width: 100%;
+    border-top: 1px solid rgb(238, 238, 238);
+    
+}
+.contenedorLibrariesEdit .botonDoneLibraryEdit:hover{
+    padding: 12px 0px;
+    margin-top: 20px;
+    border-radius: 0px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background-color: rgb(238, 238, 238);
+    color: rgba(70, 70, 70, 0.795);
+    width: 100%;
+    border-top: 1px solid rgb(238, 238, 238);
+    
+}
+
+.contenedorPostView{
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.781);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    
+}
+.postView{
+    margin-top: 40px;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+.contenedorPerfilView{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+}
+.contenedorImageView{
+    width: 100%;
+    height: 600px;
+    display: flex;
+}
+.picUsername{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    height: 100%;
+}
+.picUsername h3{
+    margin: 0px;
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.938);
+}
+.imageViewPost{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+.botonCloseView{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(128, 128, 128, 0.39);
+    border: 0px;
+    color: white;
+    border-radius: 100%;
+    height: 30px;
+    width: 30px;
+}
+.infoPostView{
+    position: relative;
+    padding: 20px;
+    background-color: white;
+    padding-bottom: 30px;
+}
+.infoPostView h2{
+    margin: 0px;
+}
+.contenedorText{
+    
+    height: 100px;
+    overflow-y: scroll;
+}
+.contenedorText p{
+    width: 98%;
+    color: rgb(49, 49, 49);
+}
+.textEffect{
+    pointer-events: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.651));
+}
+.textEffect2{
+    pointer-events: none;
+    position: absolute;
+    margin-top: 47px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(255, 255, 255));
+}
+.contenedorLike{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    background-color: white;
+    
+}
+.iconLike{
+    padding: 10px;
+    padding-right: 20px;
+    font-size: 20px;
+}
+

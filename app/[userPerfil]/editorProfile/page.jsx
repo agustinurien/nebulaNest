@@ -8,7 +8,7 @@ import design2 from "../../../public/assets/designRight.jpg"
 
 const page = ({ params }) => {
     const [dataUser, setDataUser] = useState()
-    console.log(dataUser)
+
     const userProfileName = params.userPerfil
 
     useEffect(() => {
@@ -33,7 +33,7 @@ const page = ({ params }) => {
 
                 </div>
             </div>
-            <Form />
+            <Form dataUser={dataUser} />
             <div className='contenedorImageEdit2'>
                 <Image
                     src={design2}

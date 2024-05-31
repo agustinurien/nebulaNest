@@ -5,9 +5,13 @@ import Image from 'next/image'
 import logo from '../../public/assets/logo.png'
 import defaultProfilePicture from '../../public/assets/profileDefault.jpg'
 import { manrope, chivoMono } from '../fonts'
+import { getDataUserFunction } from '../functions/data'
 
 const Navbar = () => {
-    const a = true
+
+
+
+    const [data, setData] = useState()
 
     const [userEmail, setUserEmail] = useState()
     const [userName, setUserName] = useState()
@@ -15,10 +19,20 @@ const Navbar = () => {
     const [open, setOpen] = useState(false)
 
     useEffect(() => {
-        const user_email = localStorage.getItem("user_email")
-        const user_name = localStorage.getItem("user_name")
-        setUserName(user_name)
-        setUserEmail(user_email)
+        const getData = async () => {
+            const user_email = localStorage.getItem("user_email")
+            const user_name = localStorage.getItem("user_name")
+            setUserName(user_name)
+            setUserEmail(user_email)
+
+            const data = await getDataUserFunction(user_name)
+
+            if (data) {
+                setData({ ...data.data() });
+            }
+        }
+
+        getData()
     }, []);
 
     return (
@@ -48,29 +62,50 @@ const Navbar = () => {
                             <div
                                 onMouseOver={() => setOpen(true)}
 
-                                className='profileImageContainer'>
-                                <Image
-                                    src={defaultProfilePicture}
-                                    width={50}
-                                    height={50}
-                                    alt='profileImage'
-                                    className='profileImage'
-                                />
-                                <h2 className='initial'></h2>
+                                className='profileImageContainer'
+                                style={{ backgroundColor: `${data?.color}` }}>
+                                {
+                                    data?.avatar ?
+                                        <Image
+                                            className='logo avatarEdit'
+                                            src={data.avatar}
+                                            width={1000}
+                                            height={1000}
+                                            alt='logo'
+
+                                        />
+                                        :
+                                        <h2 className='initial'>{userName.charAt(0).toUpperCase()}</h2>
+                                }
+
                             </div>
 
                             {
                                 open === true &&
-                                <div
 
-                                    className='contenedorViewProfile'>
+                                <div
+                                    onMouseOver={() => setOpen(true)}
+                                    className='viewProfile'>
                                     <h3>{userName}</h3>
                                     <h4>{userEmail}</h4>
                                     <a href={`/${userName}`} className='profile'>View Profile</a>
                                     <div className='logOut'>
                                         <a href="/" onClick={() => localStorage.clear()}>Log out</a>
                                     </div>
-                                </div>}
+                                    <button style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        right: 0,
+                                        marginTop: 5,
+                                        marginRight: 5,
+                                        borderRadius: "100%",
+                                        border: 0,
+                                    }}
+                                        onClick={() => setOpen(false)}
+                                    >x</button>
+                                </div>
+
+                            }
 
                         </>
                         :

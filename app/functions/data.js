@@ -120,6 +120,31 @@ function shuffleArray(array) {
     }
     return array;
 };
+async function updateUserData(formData, file) {
+    try {
+        const userId = localStorage.getItem('user_id');
+        if (!userId) {
+            throw new Error("User ID not found in localStorage");
+        }
+
+        const { user_name, location, website, bio } = formData;
+        const userDocRef = doc(db, 'users', userId);
+
+        await updateDoc(userDocRef, {
+            avatar: file,
+            user_name,
+            location,
+            website,
+            bio
+        });
+        localStorage.setItem("user_name", user_name);
+        window.location.href = `/${user_name}`;
+
+        console.log('User data updated successfully');
+    } catch (error) {
+        console.error('Error updating user data: ', error.message);
+    }
+};
 function canEditProfile(userProfileName) {
     const userDoc = getDataUserFunction(userProfileName).then(userDoc => {
         if (userDoc) {
@@ -145,6 +170,136 @@ function canEditProfile(userProfileName) {
     });
     return userDoc
 }
+async function deletePostInLibrary(libraryId, indexPost) {
+    const userId = localStorage.getItem("user_id")
+    const userName = localStorage.getItem("user_name")
+    try {
 
-export { canEditProfile, shuffleArray, getAllPosts, getDataUserFunction, uploadFileFunction, createLibraryFunction, crearPublicacionFunction, findLibrary };
+        const userDocumentRef = doc(db, 'users', userId);
+        const userSnapshot = await getDoc(userDocumentRef);
+        const userData = userSnapshot.data();
+
+        if (!userData) {
+            throw new Error('No se encontraron datos del usuario');
+        }
+
+        const library = userData.libraries.find((lib) => lib.libraryId === libraryId);
+        if (!library) {
+            throw new Error('No se encontraro la libreria');
+        }
+
+        library.posts.splice(indexPost, 1);
+
+        await updateDoc(userDocumentRef, {
+            libraries: userData.libraries
+        });
+        window.location.href = `/${userName}`;
+        console.log('Publicación eliminada con éxito');
+    } catch (error) {
+        console.error('Error elimando la publicación:', error.message);
+    }
+}
+async function updatePostInLibrary(file, title, libraryId, indexPost) {
+    const userId = localStorage.getItem("user_id")
+    const userName = localStorage.getItem("user_name")
+    try {
+
+        const userDocumentRef = doc(db, 'users', userId);
+        const userSnapshot = await getDoc(userDocumentRef);
+        const userData = userSnapshot.data();
+
+        if (!userData) {
+            throw new Error('No se encontraron datos del usuario');
+        }
+
+        const library = userData.libraries.find((lib) => lib.libraryId === libraryId);
+        if (!library) {
+            throw new Error('No se encontraro la libreria');
+        }
+
+        library.posts[indexPost] = {
+            ...library.posts[indexPost],
+            titleP: title,
+            imageUrl: file
+        };
+        await updateDoc(userDocumentRef, {
+            libraries: userData.libraries
+        });
+        window.location.href = `/${userName}`;
+        console.log('Publicación actualizada con éxito');
+    } catch (error) {
+        console.error('Error actualizando la publicación:', error.message);
+    }
+}
+async function updateLibraries(librariesTitles) {
+    const userId = localStorage.getItem("user_id")
+    const userDocumentRef = doc(db, 'users', userId);
+    try {
+        const doc = await getDoc(userDocumentRef);
+
+        if (doc) {
+            const userData = doc.data();
+            if (userData.libraries) {
+                userData.libraries.forEach((library, index) => {
+                    if (librariesTitles[index]) {
+                        library.titleL = librariesTitles[index];
+                    }
+                });
+
+                await updateDoc(userDocumentRef, { libraries: userData.libraries });
+                console.log('Bibliotecas actualizadas con éxito:', userData.libraries);
+            }
+        }
+
+    } catch (error) {
+        console.error('Error actualizando la publicación:', error.message);
+    }
+}
+async function deleteLibraryFunction(dataUser, index) {
+    const userId = localStorage.getItem("user_id")
+    const userName = localStorage.getItem("user_name")
+    try {
+        const userDocRef = doc(db, "users", userId);
+        const userDoc = await getDataUserFunction(userName);
+
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+            const libraries = userData.libraries;
+
+            if (index !== -1) {
+
+                libraries.splice(index, 1);
+
+
+                await updateDoc(userDocRef, {
+                    libraries: libraries
+                });
+                window.location.href = `/${userName}`;
+                console.log(`Library with ID ${index} deleted successfully.`);
+            } else {
+                console.log(`Library with ID ${index} not found.`);
+            }
+        } else {
+            console.error("User document does not exist.");
+        }
+    } catch (error) {
+        console.error('Error deleting the library:', error);
+    }
+};
+
+export {
+    deleteLibraryFunction,
+    updateLibraries,
+    deletePostInLibrary,
+    updatePostInLibrary,
+    updateUserData,
+    canEditProfile,
+    shuffleArray,
+    getAllPosts,
+    getDataUserFunction,
+    uploadFileFunction,
+    createLibraryFunction,
+    crearPublicacionFunction,
+    findLibrary
+};
 
